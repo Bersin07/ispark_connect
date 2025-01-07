@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "12338909234",
+    "project_id": "workspace-a0f77",
+    "storage_bucket": "workspace-a0f77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12338909234:android:72b0ee69bc154480bdec2b",
+        "android_client_info": {
+          "package_name": "com.ispark.workspace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1FRZueAq2CVDGt4N2HxAluwZX-FIZwuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

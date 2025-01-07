@@ -1,0 +1,125 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()){
+    localProperties.load(new FileReader(localPropertiesFile))
+}
+
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()){
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode", "1")
+def flutterVersionName = localProperties.getProperty("flutter.versionName", "1.0")
+
+android {
+    compileSdkVersion 34
+    namespace 'com.ispark.workspace'
+    ndkVersion "26.1.10909125"
+    testNamespace "com.ispark.workspace"
+
+    defaultConfig {
+        applicationId "com.ispark.workspace"
+        minSdkVersion 23
+        targetSdkVersion 34
+        versionCode 6
+        versionName "1"
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+           release {
+               keyAlias keystoreProperties['keyAlias']
+               keyPassword keystoreProperties['keyPassword']
+               storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+               storePassword keystoreProperties['storePassword']
+           }
+       }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
+    }
+
+    lintOptions {
+        abortOnError false
+        disable 'RemoveWorkManagerInitializer'
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude '**/BuildConfig.class'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
+
+    viewBinding {
+        enabled = true
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:33.1.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+    implementation "androidx.work:work-runtime-ktx:2.8.1" // Ensure this is added
+    implementation 'androidx.multidex:multidex:2.0.1'
+}
+
+// flutter_background_geolocation
+/* apply from: "$rootDir/../.pub-cache/hosted/pub.dartlang.org/flutter_background_geolocation-4.15.5/android/background_geolocation.gradle" */
+
+// Add the resolution strategy here
+configurations.all {
+    /* resolutionStrategy {
+        eachDependency { details ->
+            def requested = details.requested
+            if (requested.group == 'androidx.core' && requested.name == 'core-ktx') {
+                details.useVersion '1.6.0'
+            }
+        }
+    } */
+
+    resolutionStrategy {
+        force 'androidx.core:core-ktx:1.6.0'
+    }
+}
